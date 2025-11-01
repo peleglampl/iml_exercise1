@@ -585,6 +585,65 @@ def Scenario_6():
 
 
 
+def pac_learning_analysis_1():
+        hypo_class = 100
+        confidence_level = 0.01
+        desired_accuracy_min = 0.01
+        desired_accuracy_max = 0.2
+
+        # graph calc:
+        # m >= 2 * log (2*H / confi.) / (e^2)
+
+        C = 2 * np.log(2*hypo_class / confidence_level)
+        epsilon_values =  np.linspace(desired_accuracy_min, desired_accuracy_max, 500)
+        m_values =np.ceil( C / (epsilon_values ** 2))
+
+        plt.figure(figsize=(10, 6))  # הגדרת גודל הגרף
+        plt.plot(epsilon_values, m_values, color='blue', label=f'hypo. class size={hypo_class}, $\\delta$={confidence_level}')
+
+        plt.title(
+            'Minimal Samples Required (n) vs. Desired Accuracy ($\\epsilon$)\nPAC Learning: $n \\propto 1/\\epsilon^2$',
+            fontsize=16)
+        plt.xlabel('Desired Accuracy ($\\epsilon$ - Estimation Error)', fontsize=12)
+        plt.ylabel('Minimal Samples Required (n)', fontsize=12)
+
+        plt.grid(True, which="both", linestyle='--', linewidth=0.5)
+        plt.legend()
+
+        # הצגת הגרף
+        plt.savefig('pac_learning_1.png')
+
+
+def pac_learning_analysis_2():
+    hypo_class = 100
+    confidence_level = 0.05
+    desired_accuracy_min = 10**-4
+    desired_accuracy_max = 0.1
+
+    # graph calc:
+    # m >= 2 * log (2*H / confi.) / (e^2)
+
+    C = 2 * np.log(2 * hypo_class / confidence_level)
+    epsilon_values = np.linspace(desired_accuracy_min, desired_accuracy_max, 500)
+    m_values = np.ceil(C / (epsilon_values ** 2))
+
+    plt.figure(figsize=(10, 6))  # הגדרת גודל הגרף
+    plt.plot(epsilon_values, m_values, color='blue',
+             label=f'hypo. class size={hypo_class}, $\\delta$={confidence_level}')
+
+    plt.yscale('log')
+
+    # הוספת כותרות וסימונים
+    plt.title('Minimal Samples Required (n) vs. Desired Accuracy ($\\epsilon$)\nLogarithmic Y-Axis', fontsize=16)
+    plt.xlabel('Desired Accuracy ($\\epsilon$)', fontsize=12)
+    plt.ylabel('Minimal Samples Required (n) (Log Scale)', fontsize=12)
+
+    # הוספת רשת
+    plt.grid(True, which="both", linestyle='--', linewidth=0.5)
+    plt.legend()
+
+    # שמירת הגרף
+    plt.savefig('pac_learning_2.png')
 
 
 if __name__ == '__main__':
@@ -608,3 +667,6 @@ if __name__ == '__main__':
     print(f'Scenario 6 Results:')
     Scenario_6()
 
+
+    pac_learning_analysis_1();
+    pac_learning_analysis_2();
